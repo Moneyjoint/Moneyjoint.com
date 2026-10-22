@@ -1,0 +1,746 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Money Joint — Start Trading</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="nav.css">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="logo.png">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#000a1f">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Money Joint">
+<link rel="apple-touch-icon" href="app_icon_180.png">
+<style>
+  .trade-wrap{padding-top:30px}
+  .demo-title{font-size:clamp(28px,4.5vw,40px);line-height:1.05;margin:6px 0 8px}
+  .demo-title span{color:var(--yellow)}
+  .demo-sub{color:var(--muted);font-size:15px;margin:0 0 18px;max-width:820px}
+  .mt5{background:#00102a;border:1px solid #1a3a66;border-radius:10px;overflow:hidden;font-size:13px}
+  .mt5-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 10px;background:#001a3d;border-bottom:1px solid #1a3a66}
+  .mt5-acc{color:var(--muted);font-size:12px}
+  .mt5-acc b{color:#fff}
+  .tf-group{display:flex;gap:4px;flex-wrap:wrap}
+  .tf-btn{background:transparent;border:1px solid #2a4f7a;color:var(--muted);border-radius:4px;padding:4px 8px;cursor:pointer;font-size:12px;font-weight:700}
+  .tf-btn.on{background:#0060f0;border-color:#0060f0;color:#fff}
+  .mt5-main{display:grid;grid-template-columns:190px 1fr 230px;gap:0;border-bottom:1px solid #1a3a66}
+  @media(max-width:1000px){.mt5-main{grid-template-columns:1fr}}
+  .mt5-panel{min-width:0;background:#000a1f}
+  .ph{display:flex;justify-content:space-between;align-items:center;gap:8px;background:#0a2a5e;color:#fff;font-weight:700;font-size:12px;padding:6px 10px;border-bottom:1px solid #1a3a66}
+  .ph small{color:#9fb8d6;font-weight:400}
+  .mw-row{display:grid;grid-template-columns:1fr auto;gap:2px 6px;padding:7px 10px;border-bottom:1px solid #0f2a4d;cursor:pointer}
+  .mw-row:hover{background:#001a3d}
+  .mw-row.sel{background:#0a2a5e}
+  .mw-row b{color:#fff}
+  .mw-row .px{font-variant-numeric:tabular-nums;font-size:12px;text-align:right}
+  .mw-row .chg{grid-column:1/-1;font-size:11px;color:var(--muted)}
+  .up{color:#2f9bff}
+  .dn{color:#ff6b6b}
+  @media(max-width:1000px){#d-watch{display:flex;overflow-x:auto}.mw-row{min-width:150px;border-right:1px solid #0f2a4d;border-bottom:0}}
+  .chart-wrap{padding:0}
+  .chart-legend{font-size:11px;color:var(--muted);padding:6px 10px}
+  #d-chart{width:100%;height:330px;display:block;background:#000a1f}
+  @media(max-width:600px){#d-chart{height:260px}}
+  .ord-body{padding:10px}
+  .ord-body label{display:block;font-size:11px;color:var(--muted);margin-bottom:8px}
+  .ord-body select,.ord-body input{width:100%;margin-top:3px;padding:8px;border-radius:5px;border:1px solid #2a4f7a;background:#00102a;color:#fff;font-size:14px}
+  .sb-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:6px 0 10px}
+  .sb-row button{border:0;border-radius:5px;padding:9px 6px;font-weight:900;font-size:13px;color:#fff;cursor:pointer;line-height:1.2}
+  .sb-row button small{display:block;font-weight:400;font-size:13px;font-variant-numeric:tabular-nums}
+  #d-sell{background:#d94848}
+  #d-buy{background:#0060f0}
+  .demo-info{font-size:11px;color:var(--muted);margin:6px 0 0}
+  .demo-msg{min-height:18px;font-size:12px;margin:8px 0 0;color:var(--muted)}
+  .demo-msg.err{color:#ff6b6b}
+  .demo-msg.ok{color:#2f9bff}
+  .mt5-bottom{background:#000a1f}
+  .btabs{display:flex;gap:6px;align-items:center;padding:6px 10px;border-bottom:1px solid #1a3a66;flex-wrap:wrap}
+  .btab{background:transparent;border:0;color:var(--muted);padding:6px 8px;cursor:pointer;font-weight:700;font-size:12px;border-bottom:2px solid transparent}
+  .btab.on{color:#fff;border-bottom-color:#0060f0}
+  .demo-reset{margin-left:auto;background:transparent;border:1px solid #2a4f7a;color:var(--muted);border-radius:5px;padding:5px 9px;cursor:pointer;font-size:11px}
+  .tbl-wrap{overflow-x:auto}
+  table.tbl{width:100%;border-collapse:collapse;font-size:12px;font-variant-numeric:tabular-nums}
+  table.tbl th{text-align:left;color:var(--muted);font-weight:600;padding:7px 10px;border-bottom:1px solid #1a3a66;white-space:nowrap}
+  table.tbl td{padding:7px 10px;border-bottom:1px solid #0f2a4d;white-space:nowrap}
+  .demo-close{background:transparent;border:1px solid #2a4f7a;color:#fff;border-radius:4px;padding:3px 8px;cursor:pointer;font-size:11px}
+  .demo-empty{color:var(--muted);padding:14px 10px;font-size:12px}
+  .mt5-status{display:flex;flex-wrap:wrap;gap:6px 18px;padding:8px 10px;background:#001a3d;color:var(--muted);font-size:12px}
+  .mt5-status b{color:#fff;font-variant-numeric:tabular-nums}
+  .an-bar{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:7px 10px;border-bottom:1px solid #1a3a66;background:#001a3d}
+  .an-lbl{color:var(--muted);font-size:11px;margin-right:2px;font-weight:700}
+  .an-btn{background:transparent;border:1px solid #2a4f7a;color:var(--muted);border-radius:4px;padding:4px 8px;cursor:pointer;font-size:11px;font-weight:700}
+  .an-btn.on{background:#0060f0;border-color:#0060f0;color:#fff}
+  .an-sep{width:1px;height:18px;background:#2a4f7a;margin:0 4px}
+  #d-rsi{width:100%;height:110px;display:none;background:#000a1f;border-top:1px solid #1a3a66}
+  #d-rsi.show{display:block}
+  .an-read{font-size:11px;color:var(--muted);padding:6px 10px;font-variant-numeric:tabular-nums;min-height:18px}
+  .an-box{margin:0;padding:10px 12px;border-top:1px solid #1a3a66;background:#00142f;font-size:12px;color:#c8d6e8;line-height:1.5}
+  .an-box h4{margin:0 0 6px;color:#fff;font-size:12px}
+  .an-box p{margin:0 0 5px}
+  .an-box .dim{color:#8ea6c4}
+  #d-chart{cursor:crosshair}
+  .demo-warn{font-size:12px;color:#8e9aa0;margin:14px 0 0}
+  .real-box{text-align:center;padding:44px 0 20px}
+  .real-box h2{font-size:clamp(26px,4vw,36px);margin:0 0 10px}
+  .real-box h2 span{color:var(--yellow)}
+  .real-box p{color:var(--muted);margin:0 0 22px}
+  .big-cta{display:inline-block;background:#0060f0;color:#fff;font-weight:900;font-size:18px;padding:16px 32px;border-radius:8px}
+</style>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2941626380506355" crossorigin="anonymous"></script>
+<script data-cfasync="false" src="https://ahuramazda.org/1/d7a3c207aa3b23d35289116ffe220835"></script>
+</head>
+<body>
+<main>
+<section class="trade-wrap"><div class="wrap">
+  <div class="kicker">PRACTICE FIRST • VIRTUAL MONEY ONLY</div>
+  <h1 class="demo-title">Demo <span>Trading Account</span></h1>
+  <p class="demo-sub">Practise like on MetaTrader 5: pick a market in Market Watch, check the chart, then place a BUY or SELL with a lot size, stop loss and take profit. Prices are simulated, not live.</p>
+
+  <div class="mt5">
+    <div class="mt5-top">
+      <div class="mt5-acc">Demo account · <b id="d-acc">$10,000.00</b> · Leverage <b id="d-levtxt">1:100</b></div>
+      <div class="tf-group" id="d-tf"></div>
+    </div>
+
+    <div class="mt5-main">
+      <aside class="mt5-panel">
+        <div class="ph">Market Watch <small>Bid / Ask</small></div>
+        <div id="d-watch"></div>
+      </aside>
+
+      <div class="mt5-panel">
+        <div class="ph"><span id="d-title">EURUSD, M5</span><span id="d-ohlc" style="font-weight:400;color:#9fb8d6;font-variant-numeric:tabular-nums"></span></div>
+        <div class="an-bar">
+          <span class="an-lbl">Indicators</span>
+          <button class="an-btn" data-ind="ma20" type="button">MA 20</button>
+          <button class="an-btn" data-ind="ma50" type="button">MA 50</button>
+          <button class="an-btn" data-ind="bb" type="button">Bollinger</button>
+          <button class="an-btn" data-ind="sr" type="button">Support/Resist.</button>
+          <button class="an-btn" data-ind="rsi" type="button">RSI 14</button>
+          <span class="an-sep"></span>
+          <span class="an-lbl">Draw</span>
+          <button class="an-btn" data-tool="none" type="button">Crosshair</button>
+          <button class="an-btn" data-tool="hline" type="button">Horizontal line</button>
+          <button class="an-btn" data-tool="trend" type="button">Trend line</button>
+          <button class="an-btn" id="an-clear" type="button">Clear drawings</button>
+        </div>
+        <canvas id="d-chart"></canvas>
+        <canvas id="d-rsi"></canvas>
+        <div class="an-read" id="d-cross">Move the cursor over the chart to read prices. Pick a drawing tool, then click the chart.</div>
+        <div class="chart-legend">Blue candle = price went up · Red candle = price went down · Dashed lines: <span style="color:#e8bd54">E</span> entry, <span style="color:#ff6b6b">SL</span> stop loss, <span style="color:#2f9bff">TP</span> take profit</div>
+        <div class="an-box" id="d-analysis"></div>
+      </div>
+
+      <aside class="mt5-panel">
+        <div class="ph">New Order</div>
+        <div class="ord-body">
+          <label>Symbol <select id="d-symbol"></select></label>
+          <div class="sb-row">
+            <button id="d-sell" type="button">SELL<small id="d-bid">—</small></button>
+            <button id="d-buy" type="button">BUY<small id="d-ask">—</small></button>
+          </div>
+          <label>Volume (lots, min 0.01)<input id="d-lots" type="number" step="0.01" min="0.01" max="10" value="0.10"></label>
+          <label>Stop Loss (price, optional)<input id="d-sl" type="number" step="any" placeholder="Optional"></label>
+          <label>Take Profit (price, optional)<input id="d-tp" type="number" step="any" placeholder="Optional"></label>
+          <label>Leverage<select id="d-lev"></select></label>
+          <p class="demo-info" id="d-info">Required margin: —</p>
+          <p class="demo-msg" id="d-msg" role="status"></p>
+        </div>
+      </aside>
+    </div>
+
+    <div class="mt5-bottom">
+      <div class="btabs">
+        <button class="btab on" data-tab="trade" type="button">Trade</button>
+        <button class="btab" data-tab="history" type="button">History</button>
+        <button class="demo-reset" id="d-reset" type="button">Reset demo to $10,000</button>
+      </div>
+      <div class="tbl-wrap" id="d-table"></div>
+    </div>
+
+    <div class="mt5-status">
+      <span>Balance <b id="d-balance">$10,000.00</b></span>
+      <span>Equity <b id="d-equity">$10,000.00</b></span>
+      <span>Margin <b id="d-used">$0.00</b></span>
+      <span>Free margin <b id="d-free">$10,000.00</b></span>
+      <span>Margin level <b id="d-level">—</b></span>
+      <span>Profit <b id="d-profit">$0.00</b></span>
+    </div>
+  </div>
+
+  <p class="demo-warn">Demo account uses virtual money only. Leverage multiplies gains and losses alike: at 1:5000 a small price move can wipe out a position, and stop-outs close trades automatically when margin runs low. Most traders lose money with leveraged products, so practise here until you have a consistent, tested plan.</p>
+</div></section>
+
+<section class="real-box"><div class="wrap">
+  <h2>Ready to trade <span>for real?</span></h2>
+  <p>Open your real trading account with Headway through our link.</p>
+  <a class="big-cta" href="https://YOUR-HEADWAY-LINK" target="_blank" rel="noopener">Open Headway Account →</a>
+</div></section>
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    Money Joint • Education only. Trading involves risk of loss. Past performance is not indicative of future results.
+  </div>
+<div style="margin-top:8px;font-size:14px">Business email: <a href="mailto:moneyjoint0@gmail.com" style="color:#3ea8ff;font-weight:700;text-decoration:none">moneyjoint0@gmail.com</a></div></footer>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js')
+      .then(reg => console.log('Money Joint App ready', reg.scope))
+      .catch(err => console.log('SW failed', err));
+  });
+}
+</script>
+<nav class="mj-bottom-nav" aria-label="Main navigation">
+  <a class="mj-nav-item" href="index.html" data-page="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 10 9-7 9 7"/><path d="M5 9v11h14V9"/><path d="M9 20v-6h6v6"/></svg><span>Home</span></a>
+  <a class="mj-nav-item" href="learning.html" data-page="learning.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 4.5A2.5 2.5 0 0 1 4.5 2H12v19H5a3 3 0 0 0-3 1z"/><path d="M22 4.5A2.5 2.5 0 0 0 19.5 2H12v19h7a3 3 0 0 1 3 1z"/></svg><span>Learning</span></a>
+  <a class="mj-nav-item" href="lessons.html" data-page="lessons.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 2 9 5-9 5-9-5 9-5Z"/><path d="m3 12 9 5 9-5"/><path d="m3 17 9 5 9-5"/></svg><span>Lessons</span></a>
+  <a class="mj-nav-item" href="quiz.html" data-page="quiz.html"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8 12 2.5 2.5L16 9"/></svg><span>Quiz</span></a>
+  <a class="mj-nav-item" href="start-trading.html" data-page="start-trading.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 17 6-6 4 4 8-9"/><path d="M15 6h6v6"/></svg><span>Trade</span></a>
+  <a class="mj-nav-item" href="community.html" data-page="community.html"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.6a3.5 3.5 0 0 1 0 6.8"/><path d="M18.5 14.2A6.5 6.5 0 0 1 21.5 20"/></svg><span>Community</span></a>
+  <a class="mj-nav-item" href="donate.html" data-page="donate.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.5 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"/></svg><span>Donate</span></a>
+</nav>
+<script>
+(()=>{const p=location.pathname.split("/").pop()||"index.html";document.querySelectorAll(".mj-nav-item").forEach(a=>{if(a.dataset.page===p){a.classList.add("active");a.setAttribute("aria-current","page")}})})();
+</script>
+
+<script>
+(() => {
+  const INST = {
+    EURUSD:{name:'EUR/USD',dec:5,contract:100000,quoteUSD:true, anchor:1.0850,spread:0.00012,vol:0.00005},
+    GBPUSD:{name:'GBP/USD',dec:5,contract:100000,quoteUSD:true, anchor:1.2650,spread:0.00014,vol:0.00006},
+    AUDUSD:{name:'AUD/USD',dec:5,contract:100000,quoteUSD:true, anchor:0.6580,spread:0.00012,vol:0.00004},
+    USDJPY:{name:'USD/JPY',dec:3,contract:100000,quoteUSD:false,anchor:149.50,spread:0.014,vol:0.010},
+    XAUUSD:{name:'Gold',dec:2,contract:100,quoteUSD:true,anchor:2650.00,spread:0.30,vol:0.40},
+    XAGUSD:{name:'Silver',dec:3,contract:5000,quoteUSD:true,anchor:31.500,spread:0.030,vol:0.025}
+  };
+  const SYMS = Object.keys(INST);
+  const LEVS = [10,50,100,200,500,1000,2000,5000];
+  const TFS = [{t:60,l:'M1'},{t:300,l:'M5'},{t:900,l:'M15'},{t:3600,l:'H1'}];
+  const NC = 60, CAP = 200;
+  const KEY = 'mj_demo_account_v3';
+  const $ = id => document.getElementById(id);
+
+  const price = {}, open0 = {}, cache = {};
+  SYMS.forEach(s => { price[s] = INST[s].anchor; open0[s] = INST[s].anchor; });
+  let tickCount = 0, selected = 'EURUSD';
+
+  function fresh(){ return {balance:10000, lev:100, tf:300, tab:'trade', positions:[], history:[], nextId:1, ind:{ma20:true,ma50:false,bb:false,sr:false,rsi:false}, draw:{}}; }
+  function load(){ try { const s = JSON.parse(localStorage.getItem(KEY)); return (s && typeof s.balance === 'number') ? s : null; } catch(e){ return null; } }
+  function save(){ try { localStorage.setItem(KEY, JSON.stringify(st)); } catch(e){} }
+  let st = load() || fresh();
+  if (!LEVS.includes(st.lev)) st.lev = 100;
+  if (!TFS.some(t => t.t === st.tf)) st.tf = 300;
+  if (!st.ind) st.ind = {ma20:true,ma50:false,bb:false,sr:false,rsi:false};
+  if (!st.draw) st.draw = {};
+
+  const r = (v, d) => Number(v.toFixed(d));
+  const bid = s => r(price[s] - INST[s].spread/2, INST[s].dec);
+  const ask = s => r(price[s] + INST[s].spread/2, INST[s].dec);
+  const money = n => (n < 0 ? '-' : '') + '$' + Math.abs(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
+  const closePx = p => p.side === 'buy' ? bid(p.sym) : ask(p.sym);
+  const plOf = (p, px) => { const I = INST[p.sym], d = p.side === 'buy' ? 1 : -1, u = p.lots * I.contract; return I.quoteUSD ? d*u*(px-p.entry) : d*u*(px-p.entry)/px; };
+  const notional = (sym, lots, px) => INST[sym].quoteUSD ? lots*INST[sym].contract*px : lots*INST[sym].contract;
+  const marginFor = (sym, lots, px) => notional(sym, lots, px) / st.lev;
+  const usedMargin = () => st.positions.reduce((a,p) => a + p.margin, 0);
+  const floating = () => st.positions.reduce((a,p) => a + plOf(p, closePx(p)), 0);
+  const equity = () => st.balance + floating();
+  const tfLabel = t => (TFS.find(x => x.t === t) || {l:'M5'}).l;
+  const setMsg = (t, cls) => { const m = $('d-msg'); m.textContent = t; m.className = 'demo-msg ' + (cls||''); };
+
+  // ---- candles: one series per timeframe per symbol, updated live ----
+  function seedSeries(){
+    TFS.forEach(tf => {
+      cache[tf.t] = {};
+      SYMS.forEach(s => {
+        const I = INST[s], arr = [];
+        const sigma = I.vol * Math.sqrt(tf.t) * 0.9;
+        let c = price[s];
+        for (let i = NC - 1; i >= 0; i--) {
+          const o = r(c - (Math.random() + Math.random() - 1) * sigma * 2, I.dec);
+          const w = Math.random() * sigma * 0.6;
+          arr.unshift({n0: -(NC - i) * tf.t, o, c: r(c, I.dec), h: r(Math.max(o, c) + w, I.dec), l: r(Math.min(o, c) - w, I.dec)});
+          c = o;
+        }
+        cache[tf.t][s] = arr;
+      });
+    });
+  }
+  function updateCandles(){
+    TFS.forEach(tf => SYMS.forEach(s => {
+      const arr = cache[tf.t][s], p = price[s], dec = INST[s].dec;
+      const last = arr[arr.length-1];
+      if (tickCount - last.n0 >= tf.t) {
+        arr.push({n0: Math.floor(tickCount / tf.t) * tf.t, o:p, h:p, l:p, c:p});
+        if (arr.length > CAP) arr.shift();
+      } else {
+        last.h = Math.max(last.h, p); last.l = Math.min(last.l, p); last.c = p;
+      }
+    }));
+  }
+  const candles = s => cache[st.tf][s].slice(-NC);
+
+  // ---- indicator maths (computed on the full stored series) ----
+  const closes = arr => arr.map(k => k.c);
+  function sma(vals, n){
+    const out = []; let sum = 0;
+    for (let i = 0; i < vals.length; i++) { sum += vals[i]; if (i >= n) sum -= vals[i-n]; out.push(i >= n-1 ? sum/n : null); }
+    return out;
+  }
+  function stdev(vals, n){
+    const out = [];
+    for (let i = 0; i < vals.length; i++) {
+      if (i < n-1) { out.push(null); continue; }
+      let m = 0; for (let j = i-n+1; j <= i; j++) m += vals[j]; m /= n;
+      let v = 0; for (let j = i-n+1; j <= i; j++) v += (vals[j]-m)*(vals[j]-m);
+      out.push(Math.sqrt(v/n));
+    }
+    return out;
+  }
+  function rsiSeries(vals, n){
+    const out = vals.map(() => null);
+    if (vals.length <= n) return out;
+    let ag = 0, al = 0;
+    for (let i = 1; i <= n; i++) { const d = vals[i]-vals[i-1]; ag += Math.max(d,0); al += Math.max(-d,0); }
+    ag /= n; al /= n;
+    out[n] = al === 0 ? 100 : 100 - 100/(1 + ag/al);
+    for (let i = n+1; i < vals.length; i++) {
+      const d = vals[i]-vals[i-1];
+      ag = (ag*(n-1) + Math.max(d,0))/n; al = (al*(n-1) + Math.max(-d,0))/n;
+      out[i] = al === 0 ? 100 : 100 - 100/(1 + ag/al);
+    }
+    return out;
+  }
+  function swingLevels(arr, k){
+    const res = [], sup = [];
+    for (let i = k; i < arr.length - k; i++) {
+      let isHi = true, isLo = true;
+      for (let j = i-k; j <= i+k; j++) { if (arr[j].h > arr[i].h) isHi = false; if (arr[j].l < arr[i].l) isLo = false; }
+      if (isHi) res.push(arr[i].h);
+      if (isLo) sup.push(arr[i].l);
+    }
+    return {resistance: res.slice(-2), support: sup.slice(-2)};
+  }
+  const pick = (series, cs) => series.slice(-cs.length);
+  const keyNow = () => selected + '|' + st.tf;
+  const drawingsNow = () => (st.draw[keyNow()] = st.draw[keyNow()] || []);
+
+  let LAY = null, hover = null, tool = 'none', pending = null;
+
+  function drawChart(){
+    const c = $('d-chart'), dpr = window.devicePixelRatio || 1;
+    const w = c.clientWidth, h = c.clientHeight;
+    if (!w || !h) return;
+    c.width = w * dpr; c.height = h * dpr;
+    const ctx = c.getContext('2d');
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    ctx.clearRect(0,0,w,h);
+    const full = cache[st.tf][selected], cs = candles(selected), I = INST[selected];
+    if (!cs.length) return;
+    const padT = 10, padB = 10, padR = 70;
+    let lo = Infinity, hi = -Infinity;
+    cs.forEach(k => { lo = Math.min(lo, k.l); hi = Math.max(hi, k.h); });
+    const vals = closes(full);
+    const bbMid = sma(vals, 20), bbSd = stdev(vals, 20);
+    const bbUp = bbMid.map((m,i) => m == null ? null : m + 2*bbSd[i]);
+    const bbLo = bbMid.map((m,i) => m == null ? null : m - 2*bbSd[i]);
+    const ma20 = sma(vals, 20), ma50 = sma(vals, 50);
+    if (st.ind.bb) pick(bbUp, cs).concat(pick(bbLo, cs)).forEach(v => { if (v != null) { lo = Math.min(lo, v); hi = Math.max(hi, v); } });
+    const near = v => v != null && Math.abs(v - price[selected]) / price[selected] < 0.02;
+    st.positions.filter(p => p.sym === selected).forEach(p => {
+      [p.entry, p.sl, p.tp].forEach(v => { if (near(v)) { lo = Math.min(lo, v); hi = Math.max(hi, v); } });
+    });
+    const pad = (hi - lo) * 0.08 || I.spread;
+    lo -= pad; hi += pad;
+    const span = hi - lo;
+    const y = v => padT + (hi - v) / span * (h - padT - padB);
+    const plotW = w - padR, slot = plotW / NC, bodyW = Math.max(3, slot * 0.6);
+    const offset = NC - cs.length, n0first = cs[0].n0, tf = st.tf;
+    const xOf = i => (offset + i) * slot + slot / 2;
+    const xOfN0 = n0 => (offset + (n0 - n0first) / tf) * slot + slot / 2;
+    LAY = {w, h, lo, hi, span, padT, padB, plotW, slot, offset, n0first, tf, y, cs};
+
+    ctx.font = '11px Arial'; ctx.textBaseline = 'middle';
+    for (let i = 0; i <= 5; i++) {
+      const v = hi - span * i / 5, yy = y(v);
+      ctx.strokeStyle = '#13294a'; ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(0, yy); ctx.lineTo(plotW, yy); ctx.stroke();
+      ctx.fillStyle = '#9fb8d6'; ctx.fillText(v.toFixed(I.dec), plotW + 6, yy);
+    }
+
+    // candles
+    cs.forEach((cd, i) => {
+      const x = xOf(i);
+      const up = cd.c >= cd.o, col = up ? '#2f9bff' : '#ff6b6b';
+      ctx.strokeStyle = col; ctx.fillStyle = col; ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(x, y(cd.h)); ctx.lineTo(x, y(cd.l)); ctx.stroke();
+      const top = y(Math.max(cd.o, cd.c)), bot = y(Math.min(cd.o, cd.c));
+      ctx.fillRect(x - bodyW/2, top, bodyW, Math.max(1, bot - top));
+    });
+
+    // line helper for indicator series
+    const plotSeries = (series, color, dash, width) => {
+      ctx.save(); ctx.strokeStyle = color; ctx.lineWidth = width || 1.4; ctx.setLineDash(dash || []);
+      ctx.beginPath(); let started = false;
+      pick(series, cs).forEach((v, i) => {
+        if (v == null) { started = false; return; }
+        const x = xOf(i), yy = y(v);
+        started ? ctx.lineTo(x, yy) : ctx.moveTo(x, yy); started = true;
+      });
+      ctx.stroke(); ctx.restore();
+    };
+    if (st.ind.bb) { plotSeries(bbUp, '#5a7fa8', [4,3]); plotSeries(bbLo, '#5a7fa8', [4,3]); plotSeries(bbMid, '#5a7fa8', [], 1); }
+    if (st.ind.ma20) plotSeries(ma20, '#8ecbff');
+    if (st.ind.ma50) plotSeries(ma50, '#b388ff');
+
+    // support / resistance
+    if (st.ind.sr) {
+      const sr = swingLevels(full, 3);
+      const drawLevel = (v, label, color) => {
+        if (v < lo || v > hi) return;
+        ctx.save(); ctx.setLineDash([2,4]); ctx.strokeStyle = color; ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(0, y(v)); ctx.lineTo(plotW, y(v)); ctx.stroke(); ctx.restore();
+        ctx.fillStyle = color; ctx.fillText(label, plotW + 6, y(v));
+      };
+      sr.resistance.forEach(v => drawLevel(v, 'R', '#ff9aa8'));
+      sr.support.forEach(v => drawLevel(v, 'S', '#9fd8ff'));
+    }
+
+    // user drawings for this symbol and timeframe
+    drawingsNow().forEach(d => {
+      ctx.save(); ctx.strokeStyle = '#ffffff'; ctx.fillStyle = '#ffffff'; ctx.lineWidth = 1.3;
+      if (d.type === 'h') {
+        ctx.setLineDash([]); ctx.beginPath(); ctx.moveTo(0, y(d.p)); ctx.lineTo(plotW, y(d.p)); ctx.stroke();
+        ctx.fillText(d.p.toFixed(I.dec), plotW + 6, y(d.p));
+      } else if (d.type === 't') {
+        ctx.setLineDash([]); ctx.beginPath(); ctx.moveTo(xOfN0(d.n1), y(d.p1)); ctx.lineTo(xOfN0(d.n2), y(d.p2)); ctx.stroke();
+        ctx.beginPath(); ctx.arc(xOfN0(d.n1), y(d.p1), 2.5, 0, Math.PI*2); ctx.fill();
+        ctx.beginPath(); ctx.arc(xOfN0(d.n2), y(d.p2), 2.5, 0, Math.PI*2); ctx.fill();
+      }
+      ctx.restore();
+    });
+
+    // a trend line waiting for its second click
+    if (pending && tool === 'trend' && hover) {
+      ctx.save(); ctx.setLineDash([3,3]); ctx.strokeStyle = '#ffffff';
+      ctx.beginPath(); ctx.moveTo(xOfN0(pending.n1), y(pending.p1)); ctx.lineTo(hover.x, hover.y); ctx.stroke();
+      ctx.restore();
+    }
+
+    // position levels
+    const level = (v, color, label) => {
+      if (!near(v) || v < lo || v > hi) return;
+      ctx.save(); ctx.setLineDash([5,4]); ctx.strokeStyle = color; ctx.lineWidth = 1.2;
+      ctx.beginPath(); ctx.moveTo(0, y(v)); ctx.lineTo(plotW, y(v)); ctx.stroke(); ctx.restore();
+      ctx.fillStyle = color; ctx.fillText(label, plotW + 6, y(v));
+    };
+    st.positions.filter(p => p.sym === selected).forEach(p => {
+      level(p.entry, '#e8bd54', 'E');
+      level(p.sl, '#ff6b6b', 'SL');
+      level(p.tp, '#2f9bff', 'TP');
+    });
+
+    // current price tag
+    const last = cs[cs.length-1];
+    ctx.fillStyle = last.c >= last.o ? '#2f9bff' : '#ff6b6b';
+    ctx.fillRect(plotW, y(price[selected]) - 8, padR, 16);
+    ctx.fillStyle = '#fff'; ctx.fillText(price[selected].toFixed(I.dec), plotW + 6, y(price[selected]));
+
+    // crosshair
+    let shown = last;
+    if (hover && hover.inside) {
+      ctx.save(); ctx.setLineDash([3,3]); ctx.strokeStyle = 'rgba(159,184,214,.6)'; ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(hover.x, padT); ctx.lineTo(hover.x, h - padB); ctx.moveTo(0, hover.y); ctx.lineTo(plotW, hover.y); ctx.stroke();
+      ctx.restore();
+      const idx = Math.max(0, Math.min(cs.length-1, Math.floor(hover.x / slot) - offset));
+      shown = cs[idx];
+      $('d-cross').textContent = `Cursor price ${priceAtY(hover.y).toFixed(I.dec)} · Candle O ${shown.o.toFixed(I.dec)}  H ${shown.h.toFixed(I.dec)}  L ${shown.l.toFixed(I.dec)}  C ${shown.c.toFixed(I.dec)}`;
+    } else {
+      $('d-cross').textContent = tool === 'none' ? 'Move the cursor over the chart to read prices. Pick a drawing tool, then click the chart.'
+        : tool === 'hline' ? 'Click the chart to place a horizontal line at that price.'
+        : pending ? 'Click again to finish the trend line.' : 'Click the first point of the trend line.';
+    }
+    $('d-ohlc').textContent = `O ${shown.o.toFixed(I.dec)}  H ${shown.h.toFixed(I.dec)}  L ${shown.l.toFixed(I.dec)}  C ${shown.c.toFixed(I.dec)}`;
+
+    // indicator overlays are drawn; RSI panel below
+    drawRSI(full, cs, offset, slot, plotW, w);
+  }
+
+  function priceAtY(yy){ return LAY.hi - (yy - LAY.padT) / (LAY.h - LAY.padT - LAY.padB) * LAY.span; }
+
+  function drawRSI(full, cs, offset, slot, plotW, w){
+    const c = $('d-rsi');
+    c.classList.toggle('show', !!st.ind.rsi);
+    if (!st.ind.rsi) return;
+    const dpr = window.devicePixelRatio || 1, h = c.clientHeight;
+    c.width = w * dpr; c.height = h * dpr;
+    const ctx = c.getContext('2d'); ctx.setTransform(dpr,0,0,dpr,0,0); ctx.clearRect(0,0,w,h);
+    const rsi = pick(rsiSeries(closes(full), 14), cs);
+    const yy = v => 8 + (100 - v) / 100 * (h - 16);
+    ctx.font = '10px Arial';
+    [30,70].forEach(v => {
+      ctx.strokeStyle = '#1d3a66'; ctx.setLineDash([3,3]); ctx.beginPath(); ctx.moveTo(0, yy(v)); ctx.lineTo(plotW, yy(v)); ctx.stroke(); ctx.setLineDash([]);
+      ctx.fillStyle = '#9fb8d6'; ctx.fillText(String(v), plotW + 6, yy(v));
+    });
+    ctx.strokeStyle = '#8ecbff'; ctx.lineWidth = 1.5; ctx.beginPath(); let started = false;
+    rsi.forEach((v,i) => { if (v == null) { started = false; return; } const x = (offset+i)*slot + slot/2; started ? ctx.lineTo(x, yy(v)) : ctx.moveTo(x, yy(v)); started = true; });
+    ctx.stroke();
+    const last = rsi[rsi.length-1];
+    ctx.fillStyle = '#9fb8d6'; ctx.fillText('RSI 14' + (last != null ? ': ' + last.toFixed(1) : ''), 6, 10);
+  }
+
+  function renderAnalysis(){
+    const box = $('d-analysis'), full = cache[st.tf][selected];
+    const I = INST[selected];
+    const vals = closes(full), n = vals.length, close = vals[n-1];
+    const ma20 = sma(vals,20), ma50 = sma(vals,50), rsi = rsiSeries(vals,14);
+    const m20 = ma20[n-1], m50 = ma50[n-1], r14 = rsi[n-1];
+    const lines = [];
+    if (m20 != null && m50 != null) {
+      if (close > m20 && m20 > m50) lines.push('Trend: <b>up</b>. Price is above MA 20 and MA 20 is above MA 50.');
+      else if (close < m20 && m20 < m50) lines.push('Trend: <b>down</b>. Price is below MA 20 and MA 20 is below MA 50.');
+      else lines.push('Trend: <b>mixed</b>. Price and the averages disagree, so the market may be ranging or changing direction.');
+    } else lines.push('Trend: not enough candles yet for MA 50 (at least 50 needed).');
+    if (r14 != null) {
+      const zone = r14 >= 70 ? 'overbought (buyers may be stretched, a pullback is possible)' : r14 <= 30 ? 'oversold (sellers may be stretched, a bounce is possible)' : 'neutral';
+      lines.push(`RSI 14 is <b>${r14.toFixed(1)}</b>, ${zone}.`);
+    }
+    const cur = full[n-1], body = Math.abs(cur.c - cur.o), range = cur.h - cur.l || I.spread;
+    const upW = cur.h - Math.max(cur.o, cur.c), lowW = Math.min(cur.o, cur.c) - cur.l;
+    let candle = cur.c >= cur.o ? 'Last candle is bullish' : 'Last candle is bearish';
+    if (lowW > 2*body && lowW > upW) candle += ' with a long lower wick: sellers pushed price down, buyers pushed it back up.';
+    else if (upW > 2*body && upW > lowW) candle += ' with a long upper wick: buyers pushed price up, sellers pushed it back down.';
+    else if (body > 0.7*range) candle += ' with a strong body: one side clearly controlled the candle.';
+    else candle += ' with a small body: the market is undecided.';
+    lines.push(candle);
+    if (st.ind.bb && bbPos(vals, close)) lines.push(bbPos(vals, close));
+    {
+      const sr = swingLevels(full, 3);
+      const sup = sr.support.filter(v => v < close).sort((a,b)=>b-a)[0];
+      const res = sr.resistance.filter(v => v > close).sort((a,b)=>a-b)[0];
+      if (sup != null || res != null) lines.push(`Nearest support ${sup != null ? '<b>'+sup.toFixed(I.dec)+'</b>' : 'none found'} · nearest resistance ${res != null ? '<b>'+res.toFixed(I.dec)+'</b>' : 'none found'}.`);
+    }
+    const dCount = drawingsNow().length;
+    box.innerHTML = '<h4>Chart analysis (for learning)</h4>' + lines.map(l => '<p>' + l + '</p>').join('') +
+      `<p class="dim">You have ${dCount} drawing${dCount===1?'':'s'} on this chart. This is a description of the simulated chart to help you learn how to read it, not a trade signal. Use your own plan and risk rules.</p>`;
+  }
+  function bbPos(vals, close){
+    const m = sma(vals,20), s = stdev(vals,20), i = vals.length-1;
+    if (m[i] == null) return null;
+    const up = m[i] + 2*s[i], lo = m[i] - 2*s[i];
+    if (close > up) return 'Price is above the upper Bollinger Band: price is stretched and may return toward the middle band.';
+    if (close < lo) return 'Price is below the lower Bollinger Band: price is stretched and may return toward the middle band.';
+    return 'Price is inside the Bollinger Bands.';
+  }
+
+  function drawAll(){ drawChart(); }
+
+  // ---- trading ----
+  function closePos(id, reason){
+    const i = st.positions.findIndex(p => p.id === id); if (i < 0) return null;
+    const p = st.positions[i], px = closePx(p), pl = plOf(p, px);
+    st.balance = Math.max(0, st.balance + pl); // negative balance protection
+    st.history.unshift({sym:p.sym, side:p.side, lots:p.lots, entry:p.entry, exit:px, pl, reason});
+    st.history = st.history.slice(0, 50);
+    st.positions.splice(i, 1);
+    save();
+    return {p, pl, reason};
+  }
+
+  function riskCheck(){
+    let note = null;
+    for (const p of [...st.positions]) {
+      const px = closePx(p);
+      const hitSL = p.sl != null && (p.side==='buy' ? px <= p.sl : px >= p.sl);
+      const hitTP = p.tp != null && (p.side==='buy' ? px >= p.tp : px <= p.tp);
+      if (hitSL) note = closePos(p.id, 'Stop loss');
+      else if (hitTP) note = closePos(p.id, 'Take profit');
+    }
+    if (st.positions.length && equity() <= 0) {
+      while (st.positions.length) note = closePos(st.positions[0].id, 'Account stop-out');
+    }
+    while (st.positions.length && usedMargin() > 0 && equity() / usedMargin() * 100 < 50) {
+      const worst = st.positions.reduce((w,p) => plOf(p,closePx(p)) < plOf(w,closePx(w)) ? p : w);
+      note = closePos(worst.id, 'Margin stop-out (below 50%)');
+    }
+    if (note) setMsg(`${INST[note.p.sym].name} closed: ${note.reason}. Result ${money(note.pl)}.`, note.pl < 0 ? 'err' : 'ok');
+  }
+
+  function openTrade(side){
+    const sym = selected, I = INST[sym];
+    let lots = parseFloat($('d-lots').value);
+    if (!isFinite(lots) || lots < 0.01) return setMsg('Enter a volume of at least 0.01 lots.', 'err');
+    lots = Math.min(10, Math.round(lots*100)/100);
+    const px = side === 'buy' ? ask(sym) : bid(sym);
+    const margin = marginFor(sym, lots, px);
+    const free = equity() - usedMargin();
+    if (margin > free) return setMsg(`Not enough free margin. Needed ${money(margin)}, available ${money(free)}. Lower the volume or raise leverage.`, 'err');
+    const sl = parseFloat($('d-sl').value), tp = parseFloat($('d-tp').value);
+    const hasSL = isFinite(sl), hasTP = isFinite(tp);
+    if (hasSL && (side==='buy' ? sl >= px : sl <= px)) return setMsg(side==='buy' ? 'Stop loss for a BUY must be below the price.' : 'Stop loss for a SELL must be above the price.', 'err');
+    if (hasTP && (side==='buy' ? tp <= px : tp >= px)) return setMsg(side==='buy' ? 'Take profit for a BUY must be above the price.' : 'Take profit for a SELL must be below the price.', 'err');
+    st.positions.push({id: st.nextId++, sym, side, lots, entry: px, margin, sl: hasSL ? sl : null, tp: hasTP ? tp : null});
+    save();
+    setMsg(`${side.toUpperCase()} ${lots.toFixed(2)} lot ${sym} opened at ${px.toFixed(I.dec)}.`, 'ok');
+    render();
+  }
+
+  // ---- rendering ----
+  function renderTop(){
+    const eq = equity(), used = usedMargin(), free = eq - used;
+    $('d-acc').textContent = money(st.balance);
+    $('d-levtxt').textContent = '1:' + st.lev.toLocaleString('en-US');
+    $('d-balance').textContent = money(st.balance);
+    $('d-equity').textContent = money(eq);
+    $('d-used').textContent = money(used);
+    $('d-free').textContent = money(free);
+    $('d-level').textContent = used > 0 ? (eq/used*100).toFixed(0) + '%' : '—';
+    const pl = floating();
+    $('d-profit').textContent = money(pl);
+    $('d-profit').className = pl >= 0 ? 'up' : 'dn';
+    document.querySelectorAll('.tf-btn').forEach(b => b.classList.toggle('on', +b.dataset.tf === st.tf));
+    document.querySelectorAll('.btab').forEach(b => b.classList.toggle('on', b.dataset.tab === st.tab));
+  }
+
+  function renderWatch(){
+    $('d-watch').innerHTML = SYMS.map(s => {
+      const I = INST[s], chg = (price[s] - open0[s]) / open0[s] * 100;
+      return `<div class="mw-row ${s===selected?'sel':''}" data-sym="${s}"><b>${s}</b><span class="px"><span class="dn">${bid(s).toFixed(I.dec)}</span> <span class="up">${ask(s).toFixed(I.dec)}</span></span><span class="chg ${chg>=0?'up':'dn'}">${chg>=0?'+':''}${chg.toFixed(2)}%  ${I.name}</span></div>`;
+    }).join('');
+  }
+
+  function renderOrder(){
+    const I = INST[selected];
+    $('d-title').textContent = `${selected}, ${tfLabel(st.tf)}`;
+    $('d-bid').textContent = bid(selected).toFixed(I.dec);
+    $('d-ask').textContent = ask(selected).toFixed(I.dec);
+    const lots = parseFloat($('d-lots').value) || 0;
+    $('d-info').textContent = 'Required margin at current ask: ' + money(marginFor(selected, lots, ask(selected))) + ' • 1 lot = ' + I.contract.toLocaleString('en-US') + ' units';
+    $('d-symbol').value = selected;
+  }
+
+  function renderTable(){
+    const el = $('d-table');
+    if (st.tab === 'trade') {
+      if (!st.positions.length) { el.innerHTML = '<div class="demo-empty">No open positions. Place an order with the New Order panel.</div>'; return; }
+      el.innerHTML = `<table class="tbl"><thead><tr><th>Symbol</th><th>Type</th><th>Volume</th><th>Price</th><th>S/L</th><th>T/P</th><th>Current</th><th>Profit</th><th></th></tr></thead><tbody>` +
+        st.positions.map(p => {
+          const I = INST[p.sym], pl = plOf(p, closePx(p));
+          return `<tr><td>${p.sym}</td><td class="${p.side==='buy'?'up':'dn'}">${p.side.toUpperCase()}</td><td>${p.lots.toFixed(2)}</td><td>${p.entry.toFixed(I.dec)}</td><td>${p.sl!=null?p.sl.toFixed(I.dec):'—'}</td><td>${p.tp!=null?p.tp.toFixed(I.dec):'—'}</td><td>${closePx(p).toFixed(I.dec)}</td><td class="${pl>=0?'up':'dn'}"><b>${money(pl)}</b></td><td><button class="demo-close" data-id="${p.id}" type="button">Close</button></td></tr>`;
+        }).join('') + '</tbody></table>';
+    } else {
+      if (!st.history.length) { el.innerHTML = '<div class="demo-empty">No closed trades yet.</div>'; return; }
+      el.innerHTML = `<table class="tbl"><thead><tr><th>Symbol</th><th>Type</th><th>Volume</th><th>Price</th><th>Close price</th><th>Reason</th><th>Profit</th></tr></thead><tbody>` +
+        st.history.map(h => { const I = INST[h.sym]; return `<tr><td>${h.sym}</td><td class="${h.side==='buy'?'up':'dn'}">${h.side.toUpperCase()}</td><td>${h.lots.toFixed(2)}</td><td>${h.entry.toFixed(I.dec)}</td><td>${h.exit.toFixed(I.dec)}</td><td>${h.reason}</td><td class="${h.pl>=0?'up':'dn'}"><b>${money(h.pl)}</b></td></tr>`; }).join('') + '</tbody></table>';
+    }
+  }
+
+  function render(){ renderTop(); renderWatch(); renderOrder(); renderTable(); drawChart(); renderAnalysis(); renderTools(); }
+  function renderTools(){
+    document.querySelectorAll('.an-btn[data-ind]').forEach(b => b.classList.toggle('on', !!st.ind[b.dataset.ind]));
+    document.querySelectorAll('.an-btn[data-tool]').forEach(b => b.classList.toggle('on', b.dataset.tool === tool));
+  }
+
+  function step(){
+    tickCount++;
+    SYMS.forEach(s => {
+      const I = INST[s];
+      const noise = (Math.random() + Math.random() - 1) * I.vol;
+      price[s] = r(price[s] + noise + (I.anchor - price[s]) * 0.002, I.dec);
+    });
+    updateCandles();
+  }
+  function tick(){ step(); riskCheck(); render(); }
+
+  // ---- controls ----
+  const symSel = $('d-symbol');
+  SYMS.forEach(s => { const o = document.createElement('option'); o.value = s; o.textContent = s + ' (' + INST[s].name + ')'; symSel.appendChild(o); });
+  symSel.addEventListener('change', () => { selected = symSel.value; render(); });
+
+  const tfWrap = $('d-tf');
+  TFS.forEach(t => { const b = document.createElement('button'); b.type = 'button'; b.className = 'tf-btn'; b.dataset.tf = t.t; b.textContent = t.l;
+    b.addEventListener('click', () => { st.tf = t.t; save(); render(); }); tfWrap.appendChild(b); });
+
+  const levSel = $('d-lev');
+  LEVS.forEach(l => { const o = document.createElement('option'); o.value = l; o.textContent = '1:' + l.toLocaleString('en-US'); levSel.appendChild(o); });
+  levSel.value = st.lev;
+  levSel.addEventListener('change', () => { st.lev = parseInt(levSel.value, 10); save(); render(); });
+
+  $('d-lots').addEventListener('input', render);
+  $('d-buy').addEventListener('click', () => openTrade('buy'));
+  $('d-sell').addEventListener('click', () => openTrade('sell'));
+  $('d-watch').addEventListener('click', e => {
+    const row = e.target.closest('.mw-row'); if (!row) return;
+    selected = row.dataset.sym; render();
+  });
+  document.querySelectorAll('.btab').forEach(b => b.addEventListener('click', () => { st.tab = b.dataset.tab; save(); render(); }));
+  $('d-table').addEventListener('click', e => {
+    const b = e.target.closest('.demo-close'); if (!b) return;
+    const res = closePos(parseInt(b.dataset.id, 10), 'Closed manually');
+    if (res) setMsg(`${INST[res.p.sym].name} closed. Result ${money(res.pl)}.`, res.pl < 0 ? 'err' : 'ok');
+    render();
+  });
+
+  let armed = false, armTimer = null;
+  $('d-reset').addEventListener('click', () => {
+    const b = $('d-reset');
+    if (!armed) {
+      armed = true; b.textContent = 'Click again to confirm reset';
+      armTimer = setTimeout(() => { armed = false; b.textContent = 'Reset demo to $10,000'; }, 4000);
+      return;
+    }
+    clearTimeout(armTimer); armed = false; b.textContent = 'Reset demo to $10,000';
+    st = fresh(); save(); setMsg('Demo account reset to $10,000.', 'ok'); render();
+  });
+  window.addEventListener('resize', drawChart);
+
+  document.querySelectorAll('.an-btn[data-ind]').forEach(b => b.addEventListener('click', () => {
+    const k = b.dataset.ind; st.ind[k] = !st.ind[k]; save(); render();
+  }));
+  document.querySelectorAll('.an-btn[data-tool]').forEach(b => b.addEventListener('click', () => {
+    tool = b.dataset.tool; pending = null; render();
+  }));
+  $('an-clear').addEventListener('click', () => { st.draw[keyNow()] = []; pending = null; save(); render(); });
+
+  const cnv = $('d-chart');
+  const pos = e => { const rc = cnv.getBoundingClientRect(); return {x: e.clientX - rc.left, y: e.clientY - rc.top}; };
+  cnv.addEventListener('pointermove', e => {
+    if (!LAY) return;
+    const p = pos(e);
+    hover = {x: p.x, y: p.y, inside: p.x >= 0 && p.x <= LAY.plotW && p.y >= LAY.padT && p.y <= LAY.h - LAY.padB};
+    drawChart();
+  });
+  cnv.addEventListener('pointerleave', () => { hover = null; drawChart(); });
+  cnv.addEventListener('pointerdown', e => {
+    if (!LAY || tool === 'none') return;
+    const p = pos(e);
+    if (p.x < 0 || p.x > LAY.plotW || p.y < LAY.padT || p.y > LAY.h - LAY.padB) return;
+    const price_ = priceAtY(p.y);
+    const idx = Math.max(0, Math.min(LAY.cs.length-1, Math.floor(p.x / LAY.slot) - LAY.offset));
+    const n0 = LAY.cs[idx].n0;
+    if (tool === 'hline') {
+      drawingsNow().push({type:'h', p: r(price_, INST[selected].dec)});
+      tool = 'none'; save(); render();
+    } else if (tool === 'trend') {
+      if (!pending) { pending = {n1: n0, p1: r(price_, INST[selected].dec)}; }
+      else {
+        drawingsNow().push({type:'t', n1: pending.n1, p1: pending.p1, n2: n0, p2: r(price_, INST[selected].dec)});
+        pending = null; tool = 'none'; save();
+      }
+      render();
+    }
+  });
+
+  // Start: seed about 60 candles per timeframe, then tick every second
+  seedSeries();
+  render();
+  setInterval(tick, 1000);
+  window.__demo = { tick, step, openTrade, closePos, st: () => st, selectSymbol: s => { selected = s; render(); }, setTool: t => { tool = t; pending = null; render(); }, clickChart: (x,y) => cnv.dispatchEvent(new PointerEvent('pointerdown', {clientX: cnv.getBoundingClientRect().left + x, clientY: cnv.getBoundingClientRect().top + y, bubbles: true})), lay: () => LAY };
+})();
+</script>
+</body>
+</html>

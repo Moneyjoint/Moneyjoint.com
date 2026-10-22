@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Community | Winners Don’t Compete</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,700;9..144,900&family=Outfit:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  /* ===== EDIT YOUR COLORS HERE ===== */
+  :root {
+    --bg: #000a1f;          /* page background */
+    --glow: #0a2a66;        /* soft light at the top */
+    --text: #f6f3ea;        /* main text */
+    --muted: #9fb8d6;       /* smaller text */
+    --gold: #3ea8ff;        /* headline + accents */
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    min-height: 100vh;
+    color: var(--text);
+    font-family: "Outfit", "Trebuchet MS", "Segoe UI", Arial, sans-serif;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    padding: 0 22px calc(90px + env(safe-area-inset-bottom,0px));
+    text-align: center;
+    background:
+      radial-gradient(circle at 1px 1px, rgba(255,255,255,.07) 1px, transparent 0) 0 0 / 28px 28px,
+      radial-gradient(ellipse 90% 60% at 50% 0%, var(--glow), transparent 70%),
+      var(--bg);
+  }
+  main { max-width: 680px; margin: 0 auto; padding: 80px 0 56px; }
+  h1 {
+    font-family: "Fraunces", Georgia, "Times New Roman", serif;
+    font-weight: 900;
+    font-size: clamp(2.8rem, 12vw, 5.2rem);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    color: var(--gold);
+    text-shadow: 0 0 40px rgba(62,168,255,.25);
+    margin-bottom: 28px;
+    animation: rise .9s ease both;
+  }
+  @keyframes rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+  .rule { width: 64px; height: 3px; background: var(--gold); border-radius: 2px; margin: 0 auto 28px; }
+  .lead { font-size: 1.3rem; font-weight: 600; margin: 0 auto 16px; max-width: 34ch; }
+  .sub { color: var(--muted); margin: 0 auto 56px; max-width: 46ch; }
+  .links {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 36px 16px;
+    justify-items: center;
+  }
+  @media (min-width: 560px) { .links { grid-template-columns: repeat(4, 1fr); } }
+  .links a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    color: var(--text);
+    text-decoration: none;
+    font-weight: 600;
+  }
+  .circle {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    background: var(--c);
+    box-shadow: 0 0 0 4px var(--bg), 0 0 0 6px var(--c), 0 10px 30px -8px var(--c);
+    transition: transform .2s ease, box-shadow .2s ease;
+  }
+  .circle svg { width: 50px; height: 50px; }
+  .links a:hover .circle, .links a:focus-visible .circle {
+    transform: translateY(-6px) scale(1.06);
+    box-shadow: 0 0 0 4px var(--bg), 0 0 0 6px var(--c), 0 16px 40px -6px var(--c);
+  }
+  .links a:focus-visible { outline: none; }
+  .wa { --c: #25d366; }
+  .x  { --c: #000; }
+  .dc { --c: #5865f2; }
+  .rd { --c: #ff4500; }
+  .x .circle { box-shadow: 0 0 0 4px var(--bg), 0 0 0 6px #6a6a6a, 0 10px 30px -8px #888; }
+  footer { margin-top: 64px; color: var(--muted); font-size: .9rem; }
+  footer a { color: var(--gold); }
+  @media (prefers-reduced-motion: reduce) { h1 { animation: none; } .circle { transition: none; } }
+</style>
+<link rel="stylesheet" href="nav.css">
+<script data-cfasync="false" src="https://ahuramazda.org/1/d7a3c207aa3b23d35289116ffe220835"></script>
+</head>
+<body>
+<main>
+  <h1>Winners don’t compete.</h1>
+  <div class="rule"></div>
+  <p class="lead">They build together. Every great move starts with the right people around you, people who share ideas, tips and wins instead of hiding them.</p>
+  <p class="sub">Join the Money Joint community. Learn faster, stay motivated and grow your money with people who are doing the same. Pick the platform you like best and jump in.</p>
+
+  <div class="links">
+    <!-- Replace each # with your real link -->
+    <a class="wa" href="https://whatsapp.com/channel/0029Vb8sNF5KrWQwUehJp238" target="_blank" rel="noopener">
+      <span class="circle">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.6-1.2A9 9 0 1 0 12 3z" fill="none" stroke="#fff" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 7.5c-.5.5-.8 1.2-.4 2.3.9 2.3 2.8 4.2 5.1 5.1 1.1.4 1.8.1 2.3-.4l.3-.8-2-1-.9.8c-1.3-.5-2.4-1.6-2.9-2.9l.8-.9-1-2z" fill="#fff"/></svg>
+      </span>
+      WhatsApp
+    </a>
+    <a class="x" href="#" target="_blank" rel="noopener">
+      <span class="circle">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4.5h3.6l10.4 15h-3.6z" fill="#fff"/><path d="M18.8 4.5L5.2 19.5" stroke="#fff" stroke-width="1.6" fill="none"/></svg>
+      </span>
+      X
+    </a>
+    <a class="dc" href="https://discord.gg/SHSDAvfv4" target="_blank" rel="noopener">
+      <span class="circle">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6.5C7.5 5.7 9 5.3 10 5.2l.4.8c.5-.1 1.1-.1 1.6-.1s1.1 0 1.6.1l.4-.8c1 .1 2.5.5 4 1.3 1.6 2.5 2.4 5.2 2.2 8.2-1.4 1-2.8 1.6-4.1 2l-.9-1.4c.5-.2 1-.4 1.4-.7l-.3-.2c-2.6 1.2-5.4 1.2-8 0l-.3.2c.4.3.9.5 1.4.7l-.9 1.4c-1.3-.4-2.7-1-4.1-2C3.6 11.7 4.4 9 6 6.5z" fill="#fff"/><circle cx="9.3" cy="12" r="1.3" fill="#5865f2"/><circle cx="14.7" cy="12" r="1.3" fill="#5865f2"/></svg>
+      </span>
+      Discord
+    </a>
+    <a class="rd" href="#" target="_blank" rel="noopener">
+      <span class="circle">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="14" rx="7" ry="4.8" fill="#fff"/><circle cx="5.3" cy="11.5" r="1.8" fill="#fff"/><circle cx="18.7" cy="11.5" r="1.8" fill="#fff"/><circle cx="9.3" cy="13.5" r="1.2" fill="#ff4500"/><circle cx="14.7" cy="13.5" r="1.2" fill="#ff4500"/><path d="M9.5 16.5c1.4 1 3.6 1 5 0" stroke="#ff4500" stroke-width="1" fill="none" stroke-linecap="round"/><path d="M12 9.2l1-4.5 3.5.8" stroke="#fff" stroke-width="1" fill="none"/><circle cx="17.5" cy="5.8" r="1.2" fill="#fff"/></svg>
+      </span>
+      Reddit
+    </a>
+  </div>
+
+  <footer><a href="index.html">Back to home</a><div style="margin-top:8px;font-size:14px">Business email: <a href="mailto:moneyjoint0@gmail.com" style="color:#3ea8ff;font-weight:700;text-decoration:none">moneyjoint0@gmail.com</a></div></footer>
+</main>
+<nav class="mj-bottom-nav" aria-label="Main navigation">
+  <a class="mj-nav-item" href="index.html" data-page="index.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 10 9-7 9 7"/><path d="M5 9v11h14V9"/><path d="M9 20v-6h6v6"/></svg><span>Home</span></a>
+  <a class="mj-nav-item" href="learning.html" data-page="learning.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 4.5A2.5 2.5 0 0 1 4.5 2H12v19H5a3 3 0 0 0-3 1z"/><path d="M22 4.5A2.5 2.5 0 0 0 19.5 2H12v19h7a3 3 0 0 1 3 1z"/></svg><span>Learning</span></a>
+  <a class="mj-nav-item" href="lessons.html" data-page="lessons.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 2 9 5-9 5-9-5 9-5Z"/><path d="m3 12 9 5 9-5"/><path d="m3 17 9 5 9-5"/></svg><span>Lessons</span></a>
+  <a class="mj-nav-item" href="quiz.html" data-page="quiz.html"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8 12 2.5 2.5L16 9"/></svg><span>Quiz</span></a>
+  <a class="mj-nav-item" href="start-trading.html" data-page="start-trading.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 17 6-6 4 4 8-9"/><path d="M15 6h6v6"/></svg><span>Trade</span></a>
+  <a class="mj-nav-item" href="community.html" data-page="community.html"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><path d="M16 4.6a3.5 3.5 0 0 1 0 6.8"/><path d="M18.5 14.2A6.5 6.5 0 0 1 21.5 20"/></svg><span>Community</span></a>
+  <a class="mj-nav-item" href="donate.html" data-page="donate.html"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1.1-1.1a5.5 5.5 0 0 0-7.8 7.8l1.1 1.1L12 21l7.8-7.5 1.1-1.1a5.5 5.5 0 0 0-.1-7.8Z"/></svg><span>Donate</span></a>
+</nav>
+<script>
+(()=>{const p=location.pathname.split("/").pop()||"index.html";document.querySelectorAll(".mj-nav-item").forEach(a=>{if(a.dataset.page===p){a.classList.add("active");a.setAttribute("aria-current","page")}})})();
+</script>
+</body>
+</html>
